@@ -1,0 +1,6 @@
+{% extends 'app/main/index.html' %}
+
+{% block base %}
+    <img src="{{ url }}" alt="">
+    {{ wtf.quick_form(form) }}
+{% endblock %}
