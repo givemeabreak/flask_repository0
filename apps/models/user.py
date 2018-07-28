@@ -15,11 +15,18 @@ class User(UserMixin,db.Model):
     icon = db.Column(db.String(50),default='/uploads/default.jpg')
 
     posts = db.relationship('Post',backref='user',lazy='dynamic')
+    collections = db.relationship('Post',backref=db.backref('users'),lazy='dynamic',secondary='collection')
 
     def generate_token(self):
         jws = JWS(current_app.config['SECRET_KEY'], expires_in=600)
         token = jws.dumps({'id': self.id})
         return token
+
+    def is_collected(self,pid):
+        for post in self.collections:
+            if post.id == pid:
+                return True
+        return False
 
     @staticmethod
     def check_token(token):

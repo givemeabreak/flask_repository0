@@ -119,12 +119,21 @@
                     <div class="right-content">
                         发帖时间:{{ moment(post.posttime).fromNow() }}
                     </div>
+                    {% if current_user.is_authenticated %}
+                        <div style="float:right;margin-right:10px;">
+                            {% if current_user.is_collected(post.id) %}
+                                <a href="{{ url_for('postbp.switch_collect',pid=post.id) }}">取消收藏</a>
+                            {% else %}
+                                <a href="{{ url_for('postbp.switch_collect',pid=post.id) }}">收藏</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
 
                 </li>
             {% endfor %}
         </ul>
 
-    {{  p(pagination) }}
+        {{ p(pagination) }}
 
 
     {% endblock %}

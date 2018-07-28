@@ -8,3 +8,4 @@ class Post(db.Model):
     content = db.Column(db.Text(),nullable=False)
     posttime = db.Column(db.DateTime(),default=datetime.datetime.utcnow)
     uid = db.Column(db.Integer,db.ForeignKey('user.id'))
+
