@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, url_for
+from flask import Blueprint, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 
 from apps.models.post import Post
@@ -19,10 +19,11 @@ def switch_collect(pid):
     collections = current_user.collections
     if current_user.is_collected(pid):
         collections.remove(post)
-        flash('取消收藏')
-
+        # flash('取消收藏')
+        # print('======================================False')
+        return jsonify({'is_collected':False})
     else:
         collections.append(post)
-        flash('收藏成功')
-
-    return redirect(url_for('mainbp.index'))
+        # print('======================================True')
+        # flash('收藏成功')
+        return jsonify({'is_collected':True})

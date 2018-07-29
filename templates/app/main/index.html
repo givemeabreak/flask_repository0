@@ -22,6 +22,10 @@
             float: right;
             margin-right: 200px;
         }
+        span.collect{
+            cursor:pointer;
+            color: #ff8e92;
+        }
     </style>
 
 {% endblock %}
@@ -122,9 +126,9 @@
                     {% if current_user.is_authenticated %}
                         <div style="float:right;margin-right:10px;">
                             {% if current_user.is_collected(post.id) %}
-                                <a href="{{ url_for('postbp.switch_collect',pid=post.id) }}">取消收藏</a>
+                                <span class="collect" url='{{ url_for('postbp.switch_collect',pid=post.id) }}' >取消收藏</span>
                             {% else %}
-                                <a href="{{ url_for('postbp.switch_collect',pid=post.id) }}">收藏</a>
+                                <span class="collect" url='{{ url_for('postbp.switch_collect',pid=post.id) }}' >收藏</span>
                             {% endif %}
                         </div>
                     {% endif %}
@@ -145,4 +149,28 @@
 
     {{ moment.include_moment() }}
     {{ moment.locale('zh-cn') }}
+    <script type="text/javascript" >
+        $(function(){
+            $('span.collect').each(function(i,element){
+                $(element).click(function () {
+                    $.ajax({
+                        url:$(element).attr('url'),
+                        type:'get',
+                        dataType:'json'
+                    })
+                        .done(function(data){
+                            if(data.is_collected==true){
+                                $(element).text('取消收藏');
+                            }else{
+                                $(element).text('收藏');
+                            }
+                        })
+                        .fail(function(data){
+                            alert('connect fail');
+                        });
+
+                })
+            })
+        })
+    </script>
 {% endblock %}
